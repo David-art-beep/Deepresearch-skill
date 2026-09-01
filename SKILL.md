@@ -58,7 +58,18 @@ deepresearch sources list --json
   `npm install -g @agentclientprotocol/claude-agent-acp`，再由用户完成
   `claude-agent-acp --cli auth login`。
 - OpenClaw：确认 `openclaw` 存在且 Gateway 正常。模型由 OpenClaw 配置选择，不传
-  `--harness-model`。
+  `--harness-model`。启动研究前检查目标 Agent（默认 `main`）是否具备当前工作区的写入能力：
+
+  ```bash
+  openclaw health --json
+  openclaw config get agents.entries.main.sandbox --json
+  openclaw config get agents.entries.main.tools --json
+  ```
+
+  工作区必须允许写入（`workspaceAccess: rw`，或使用非沙箱工作区），工具策略至少要能使用
+  `read`、`write`、`edit`、`apply_patch`、`exec` 和 `process`。如果配置缺失，先说明
+  DeepResearch 的 `plan`、研究和报告节点需要在 attempt 工作区创建产物，并征得用户授权后再修改
+  OpenClaw 配置、重启 Gateway 和复核；不要静默扩大其他 Agent 的权限。检查未通过时不要启动 CLI。
 
 模型、登录或 Provider 凭据缺失时，说明缺失配置，不替用户改写 Harness 全局配置。
 
