@@ -83,9 +83,10 @@ deepresearch browser status --json
 - 研究深度：`quick`、`normal` 或 `heavy`
 - 报告形式：`brief` 或 `formal_report`
 - 交付格式：`markdown`、`html`、`pdf` 或 `docx`
+- 报告语言：跟随用户的主要语言；用户明确指定语言时优先使用指定值（例如中文使用 `zh-CN`，英文使用 `en-US`）
 
 用户已给出的参数不要重复询问，只补齐缺失项。选择 DOCX 时提醒需要 Pandoc；选择 PDF 时提醒需要 Typst。
-三项未确认完成前，不得启动可能长时间运行或产生费用的研究。
+用户主要语言可从当前对话判断，不要为了语言参数重复询问；只有无法判断且语言会影响交付时才询问。上述参数未确认完成前，不得启动可能长时间运行或产生费用的研究。
 
 ## 启动研究
 
@@ -97,7 +98,7 @@ deepresearch "<query>" \
   --report-format <brief|formal_report> \
   --output-format <markdown|html|pdf|docx> \
   --harness <hermes|codex|claude-code|openclaw> \
-  --language zh-CN \
+  --language <user-language> \
   --progress tools
 ```
 
@@ -109,7 +110,7 @@ deepresearch web "<query>" \
   --report-format <brief|formal_report> \
   --output-format <markdown|html|pdf|docx> \
   --harness <hermes|codex|claude-code|openclaw> \
-  --language zh-CN \
+  --language <user-language> \
   --host 127.0.0.1 \
   --port <selected-port> \
   --progress tools
