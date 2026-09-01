@@ -101,7 +101,7 @@ deepresearch "<query>" \
   --progress tools
 ```
 
-Normal 和 Heavy 使用 Web 入口。在可持续读取输出、且启动后能将控制权返回给 Agent 的后台或持久终端会话中运行：
+Normal 和 Heavy 使用 Web 入口。启动前确定端口：优先使用用户明确指定的端口；否则检查默认端口是否可用，必要时选择一个可用端口。不要把端口写死在 Skill 或对用户承诺一个尚未确认的地址。在可持续读取输出、且启动后能将控制权返回给 Agent 的后台或持久终端会话中运行：
 
 ```bash
 deepresearch web "<query>" \
@@ -111,17 +111,17 @@ deepresearch web "<query>" \
   --harness <hermes|codex|claude-code|openclaw> \
   --language zh-CN \
   --host 127.0.0.1 \
-  --port 8765 \
+  --port <selected-port> \
   --progress tools
 ```
 
-保持该进程运行，不要再启动第二份相同研究。等待 CLI 确认 Web 已开始监听后，立即告诉用户：
+保持该进程运行，不要再启动第二份相同研究。等待 CLI 日志确认 Web 已在所选端口开始监听后，再把实际地址告诉用户：
 
 ```text
-研究已经启动，可打开 http://127.0.0.1:8765 查看实时进度。
+研究已经启动，可打开 http://127.0.0.1:<selected-port> 查看实时进度。
 ```
 
-不要等待整个研究完成后才回复用户。如果 Web 启动失败，报告启动错误，不要提供尚不可用的地址。
+将 `<selected-port>` 替换为本次运行实际使用的端口。不要等待整个研究完成后才回复用户。如果 Web 启动失败，报告启动错误，不要提供尚不可用的地址。
 
 展示链接不等于强制打开浏览器；需要 GUI 操作时遵循当前环境授权。只有用户明确要求局域网访问时才使用
 `--host 0.0.0.0`，并提醒运行轨迹和报告会对同网段可见。
