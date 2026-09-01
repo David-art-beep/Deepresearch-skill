@@ -115,6 +115,17 @@ deepresearch browser status --json
 
 ## 启动研究
 
+### Query 与标题保持原文
+
+- 用户在本轮提供的研究文本就是 CLI 的实际 query；去掉仅用于触发 Skill 的前缀（例如“使用
+  deepresearch”）后，原文直接传给 CLI。
+- 不要替用户改写、扩展、总结、压缩或重新命名 query，不要另造展示标题，也不要把 query 改成
+  “研究 + 主题”的标题。
+- 用户写在 query 中的范围、数据源要求、时间范围和交付要求必须原样保留。研究标题由 CLI/Web
+  根据原始 query 展示，Skill 不参与标题生成。
+- `mode`、`report_format`、`output_format` 和 `language` 只作为 CLI 参数传递，不得混入或改写
+  query 文本。
+
 Quick 使用前台 CLI：
 
 ```bash
