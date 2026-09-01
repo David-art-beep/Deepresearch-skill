@@ -75,6 +75,16 @@ deepresearch sources list --json
   不要静默扩大其他 Agent 或其他工作区的权限。检查未通过时不要启动 CLI。换设备或换 Agent 时重复
   这项预检，不复用旧机器的固定路径或配置。
 
+  配置检查通过后，在启动正式研究前执行一次 OpenClaw 写入冒烟检查：
+
+  ```bash
+  deepresearch doctor --harness openclaw --json
+  ```
+
+  该检查必须确认 ACP 子会话能够在当前 CLI 工作区创建并删除临时文件；如果返回
+  `workspace-write` 失败，先停止，不要启动正式研究。冒烟检查使用当前设备和当前 Agent 的
+  实际工作区，不复用其他机器的测试结果。
+
 模型、登录或 Provider 凭据缺失时，说明缺失配置，不替用户改写 Harness 全局配置。
 
 ## 准备 Camofox
