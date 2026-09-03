@@ -7,8 +7,8 @@ description: >-
 # DeepResearch
 
 作为 DeepResearch CLI 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
-默认项目为 `https://github.com/David-art-beep/Deepresearch-cli`，正式安装包以该仓库的
-[GitHub Releases](https://github.com/David-art-beep/Deepresearch-cli/releases) 为准。
+默认项目为 `https://github.com/David-art-beep/Deepresearch-cli`。当前以仓库源码构建本地 npm
+安装包，不依赖旧的版本化 Release 链接。
 
 ## 环境预检
 
@@ -28,17 +28,21 @@ description: >-
 
 安装会访问网络并修改用户级 npm 目录，执行前先取得当前环境要求的授权。
 
-从 GitHub 最新 Release 中选择名称匹配
-`david-art-beep-deepresearch-cli-*.tgz` 的资源，并使用其 `browser_download_url` 安装：
+从 GitHub 获取源码并构建本地 npm 安装包：
 
 ```bash
-npm install -g <github-release-tgz-url>
+git clone https://github.com/David-art-beep/Deepresearch-cli.git
+cd Deepresearch-cli
+python3 -m venv .venv
+.venv/bin/python -m pip install build
+.venv/bin/python scripts/build_npm_package.py
+npm install -g ./dist/*.tgz
 deepresearch --help
 ```
 
-不要默认改用 npm registry，除非包已公开发布且用户明确选择该渠道。
-不要要求用户安装 uv，也不要向系统 Python 全局安装依赖。
-如果仓库尚无可用 Release，如实说明；可以使用用户提供的本地 `.tgz`，但不得静默改用其他来源。
+不要默认改用 npm registry，也不要使用旧的 `v0.1.*` Release URL。
+不要要求用户安装 uv，也不要向系统 Python 全局安装依赖。用户提供本地 `.tgz` 时，可直接运行
+`npm install -g ./dist/*.tgz`。
 
 安装后初始化用户级 Search 配置：
 
@@ -54,9 +58,12 @@ deepresearch sources list --json
 
 - Hermes：复用现有 Hermes 登录和模型配置。
 - Codex：确认 `codex` 存在且已执行 `codex login`。
-- Claude Code：CLI 内含适配层，但不包含外部 `claude-agent-acp`。缺失时，在授权后执行
-  `npm install -g @agentclientprotocol/claude-agent-acp`，再由用户完成
-  `claude-agent-acp --cli auth login`。
+- Claude Code：当前 ACP Harness 必须能找到 `claude-agent-acp` 可执行文件；普通 `claude`
+  命令不能直接替代它。CLI 内含调用适配代码，但不捆绑外部 adapter。adapter 缺失时，在获得安装授权后执行
+  `npm install -g @agentclientprotocol/claude-agent-acp`。安装完成不等于必须重复登录：先运行
+  `deepresearch doctor --harness claude-code --json` 检查认证。已有 `ANTHROPIC_API_KEY`、
+  `ANTHROPIC_AUTH_TOKEN`、Bedrock/Vertex 配置，或 adapter 可复用现有 Claude Code 登录时，直接使用；
+  只有预检确认没有可用认证时，才提示用户执行 `claude-agent-acp --cli auth login`。不得读取或回显凭据值。
 - OpenClaw：确认 `openclaw` 存在且 Gateway 正常。模型由 OpenClaw 配置选择，不传
   `--harness-model`。启动研究前先识别当前会话实际使用的 Agent 和工作区，不要把 `main`、
   `~/.openclaw/workspace` 或其他设备上的路径写死。检查该 Agent 是否具备当前工作区的写入能力：
