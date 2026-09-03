@@ -1,18 +1,18 @@
 ---
 name: sn-deepresearch-cli
 description: >-
-  一键启用 DeepResearch-CLI，用于行业与市场研究、竞品分析、政策或技术调研、商业尽调、趋势分析、方案对比、事实核查，以及研究报告、白皮书等交付场景。用户提出深度研究、调研、调查、尽调、research/deepresearch，或任务需要跨来源取证、多维度比较和交叉验证时主动使用；Skill 会完成环境检查、CLI 安装或升级、Harness 与 Search/Camofox 准备、参数确认、研究启动和 Web 进度提示。简单常识问答、单一来源整理和纯文字润色不使用。
+  一键启用 sn-deepresearch-cli，用于行业与市场研究、竞品分析、政策或技术调研、商业尽调、趋势分析、方案对比、事实核查，以及研究报告、白皮书等交付场景。用户提出深度研究、调研、调查、尽调、research/deepresearch，或任务需要跨来源取证、多维度比较和交叉验证时主动使用；Skill 会完成环境检查、CLI 安装或升级、Harness 与 Search/Camofox 准备、参数确认、研究启动和 Web 进度提示。简单常识问答、单一来源整理和纯文字润色不使用。
 ---
 
-# DeepResearch-CLI
+# sn-deepresearch-cli
 
-作为 DeepResearch-CLI 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
+作为 sn-deepresearch-cli 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
 默认项目为 `https://github.com/OpenSenseNova/SenseNova-Skills-DeepResearch`。当前以仓库源码构建本地 npm
 安装包。
 
 ## 环境预检
 
-在安装或启动 CLI 前，仅检查当前环境是否具备运行条件：
+在安装或启动 sn-deepresearch-cli 前，仅检查当前环境是否具备运行条件：
 
 - Node.js >= 22、Python >= 3.10 和 npm 是否可用；
 - `deepresearch` 是否已安装；
@@ -24,7 +24,7 @@ description: >-
 
 不得显示环境变量值、token、Cookie、npm 凭据或 Harness Profile。
 
-## 安装或升级 CLI
+## 安装或升级 sn-deepresearch-cli
 
 安装会访问网络并修改用户级 npm 目录，执行前先取得当前环境要求的授权。
 
@@ -147,7 +147,7 @@ deepresearch browser status --json
 - `mode`、`report_format`、`output_format` 和 `language` 只作为 CLI 参数传递，不得混入或改写
   query 文本。
 
-Quick 使用前台 CLI：
+Quick 使用前台 sn-deepresearch-cli：
 
 ```bash
 deepresearch "<query>" \
@@ -184,11 +184,11 @@ deepresearch web "<query>" \
 展示链接不等于强制打开浏览器；需要 GUI 操作时遵循当前环境授权。只有用户明确要求局域网访问时才使用
 `--host 0.0.0.0`，并提醒运行轨迹和报告会对同网段可见。
 
-### Harness/CLI 监控
+### Harness/sn-deepresearch-cli 监控
 
-研究启动后，必须保留本次 Run 所使用的 Harness 和 CLI 监控进程，持续观察其 stdout/stderr、心跳和
+研究启动后，必须保留本次 Run 所使用的 Harness 和 sn-deepresearch-cli 监控进程，持续观察其 stdout/stderr、心跳和
 `deepresearch status <run-id> --json` 状态。长时间没有新输出不等于进程已失效：先读取状态和最近日志，
-不要因为暂时无输出就重复启动 Harness、启动第二份 CLI 或终止现有进程。监控会话中断时，优先重新连接
+不要因为暂时无输出就重复启动 Harness、启动第二份 sn-deepresearch-cli 或终止现有进程。监控会话中断时，优先重新连接
 到原进程；只有确认原进程已经退出、Run 已结束，或用户明确要求停止时，才可以结束监控或启动恢复命令。
 
 若监控发现 provider 超时、Harness 退出或 Run 失败，保留原进程输出和 Run 目录，按“模型调用超时与恢复”
@@ -202,9 +202,9 @@ deepresearch web "<query>" \
 
 不把搜索命中或中间文件当作最终报告，不伪造完成状态，不在 CLI 安装目录保存用户运行记录。
 
-## CLI 诊断
+## sn-deepresearch-cli 诊断
 
-本节只在 CLI 已安装后使用。正常研究流程不要预先执行整套诊断；仅当用户明确要求诊断，或安装验证失败、
+本节只在 sn-deepresearch-cli 已安装后使用。正常研究流程不要预先执行整套诊断；仅当用户明确要求诊断，或安装验证失败、
 Search 异常、Web 无法访问、Run 停止更新、节点失败、报告未生成时，按当前问题选择最少的只读检查：
 
 ```bash
@@ -225,8 +225,7 @@ deepresearch web --help
 - Camofox 不可用：切换来源继续研究，不让工作流因此阻塞。
 - Run 失败：保留运行记录，只在确认原进程已结束后恢复。
 
-出现上述异常时，先执行 `deepresearch diagnostics --json`，再完整读取其 `path` 字段指向的 CLI 内置诊断手册。
-不要根据 Skill 所在目录推断 CLI 的安装位置，也不要读取 Skill 旁边或源码仓库中的相对路径。
+出现上述异常时，先执行 `deepresearch diagnostics --json`，再完整读取其 `path` 字段指向的 sn-deepresearch-cli 内置诊断手册。不要根据 Skill 所在目录推断 sn-deepresearch-cli 的安装位置，也不要读取 Skill 旁边或源码仓库中的相对路径。
 
-正常流程不要加载诊断手册。若命令失败或返回路径不存在，使用本节的最小只读检查并明确说明 CLI 诊断手册缺失。
+正常流程不要加载诊断手册。若命令失败或返回路径不存在，使用本节的最小只读检查并明确说明 sn-deepresearch-cli 诊断手册缺失。
 诊断手册中的安装、配置修改、服务启动和网络操作仍需遵循当前环境授权；读取手册本身不扩大用户授权范围。
