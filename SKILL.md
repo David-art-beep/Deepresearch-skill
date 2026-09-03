@@ -15,10 +15,10 @@ description: >-
 在安装或启动 SenseNova-Skills-DeepResearch 前，仅检查当前环境是否具备运行条件：
 
 - Node.js >= 22、Python >= 3.10 和 npm 是否可用；
-- `deepresearch` 是否已安装；
+- 是否已安装 SenseNova-Skills-DeepResearch 提供的 `deepresearch` 命令；
 - 用户选择的 Hermes、Codex、Claude Code 或 OpenClaw 是否存在。
 
-这里使用系统的命令存在性和版本检查即可。`deepresearch` 尚未安装时，不得提前调用
+这里使用系统的命令存在性和版本检查即可。SenseNova-Skills-DeepResearch 提供的 `deepresearch` 命令尚未安装时，不得提前调用
 `deepresearch doctor`、`sources`、`browser`、`status` 等 SenseNova-Skills-DeepResearch 子命令。SenseNova-Skills-DeepResearch 或 Harness 缺失时先报告缺失项，
 不要静默改用其他 Harness。
 
