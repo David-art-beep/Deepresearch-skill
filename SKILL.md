@@ -94,17 +94,11 @@ deepresearch sources list --json
 
 ## 模型调用超时与恢复
 
-如果节点日志显示模型调用因连接层长时间无响应、stale/idle timeout、request timeout、broken pipe
-或类似 provider 错误中止，先向用户说明：失败发生在模型 provider/连接层，并确认失败节点、重试次数、
-实际 harness、provider、model 和超时类型；不要把它误判为搜索、报告转换或 CLI 安装失败。
+如果节点日志显示模型调用因连接层长时间无响应、stale/idle timeout、request timeout、broken pipe或类似 provider 错误中止，先向用户说明：失败发生在模型 provider/连接层，并确认失败节点、重试次数、实际 harness、provider、model 和超时类型；不要把它误判为搜索、报告转换或 CLI 安装失败。
 
-先读取该 Harness 的官方配置或诊断输出，确认是“无响应空闲超时”还是“整次请求超时”，并只展示配置键名和
-当前值，不展示凭据。任何修改超时、重试次数、provider 或模型的操作都必须先向用户说明影响并申请授权，
-不得静默修改全局配置。
+先读取该 Harness 的官方配置或诊断输出，确认是“无响应空闲超时”还是“整次请求超时”，并只展示配置键名和当前值，不展示凭据。任何修改超时、重试次数、provider 或模型的操作都必须先向用户说明影响并申请授权，不得静默修改全局配置。
 
-获得授权后，优先只针对本次实际使用的 provider/model 将无响应空闲超时调到 300 秒，再使用原 harness
-从失败 Run 恢复；不要从头重跑已成功的 plan/research。以 Hermes 为例，确认配置键为
-`providers.<provider_id>.models.<model>.stale_timeout_seconds` 后，才可执行：
+获得授权后，优先只针对本次实际使用的 provider/model 将无响应空闲超时调到 300 秒，再使用原 harness 从失败 Run 恢复；不要从头重跑已成功的 plan/research。以 Hermes 为例，确认配置键为 `providers.<provider_id>.models.<model>.stale_timeout_seconds` 后，才可执行：
 
 ```bash
 hermes config set providers.<provider_id>.models.<model>.stale_timeout_seconds 300
