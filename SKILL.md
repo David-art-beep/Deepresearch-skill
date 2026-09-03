@@ -7,7 +7,7 @@ description: >-
 # DeepResearch-CLI
 
 作为 DeepResearch-CLI 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
-默认项目为 `https://github.com/OpenSenseNova/DeepResearch-CLI`。当前以仓库源码构建本地 npm
+默认项目为 `https://github.com/OpenSenseNova/SenseNova-Skills-DeepResearch`。当前以仓库源码构建本地 npm
 安装包。
 
 ## 环境预检
@@ -31,7 +31,7 @@ description: >-
 从 GitHub 获取源码并构建本地 npm 安装包：
 
 ```bash
-git clone https://github.com/OpenSenseNova/DeepResearch-CLI.git
+git clone https://github.com/OpenSenseNova/SenseNova-Skills-DeepResearch.git
 cd DeepResearch-CLI
 python3 -m venv .venv
 .venv/bin/python -m pip install build
