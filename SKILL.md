@@ -1,30 +1,30 @@
 ---
 name: sn-deepresearch-cli
 description: >-
-  一键启用 sn-deepresearch-cli，用于行业与市场研究、竞品分析、政策或技术调研、商业尽调、趋势分析、方案对比、事实核查，以及研究报告、白皮书等交付场景。用户提出深度研究、调研、调查、尽调、research/deepresearch，或任务需要跨来源取证、多维度比较和交叉验证时主动使用；Skill 会完成环境检查、CLI 安装或升级、Harness 与 Search/Camofox 准备、参数确认、研究启动和 Web 进度提示。简单常识问答、单一来源整理和纯文字润色不使用。
+  一键启用 SenseNova-Skills-DeepResearch，用于行业与市场研究、竞品分析、政策或技术调研、商业尽调、趋势分析、方案对比、事实核查，以及研究报告、白皮书等交付场景。用户提出深度研究、调研、调查、尽调、research/deepresearch，或任务需要跨来源取证、多维度比较和交叉验证时主动使用；Skill 会完成环境检查、SenseNova-Skills-DeepResearch 安装或升级、Harness 与 Search/Camofox 准备、参数确认、研究启动和 Web 进度提示。简单常识问答、单一来源整理和纯文字润色不使用。
 ---
 
 # sn-deepresearch-cli
 
-作为 sn-deepresearch-cli 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
+作为 SenseNova-Skills-DeepResearch 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
 默认项目为 `https://github.com/OpenSenseNova/SenseNova-Skills-DeepResearch`。当前以仓库源码构建本地 npm
 安装包。
 
 ## 环境预检
 
-在安装或启动 sn-deepresearch-cli 前，仅检查当前环境是否具备运行条件：
+在安装或启动 SenseNova-Skills-DeepResearch 前，仅检查当前环境是否具备运行条件：
 
 - Node.js >= 22、Python >= 3.10 和 npm 是否可用；
 - `deepresearch` 是否已安装；
 - 用户选择的 Hermes、Codex、Claude Code 或 OpenClaw 是否存在。
 
 这里使用系统的命令存在性和版本检查即可。`deepresearch` 尚未安装时，不得提前调用
-`deepresearch doctor`、`sources`、`browser`、`status` 等 CLI 子命令。CLI 或 Harness 缺失时先报告缺失项，
+`deepresearch doctor`、`sources`、`browser`、`status` 等 SenseNova-Skills-DeepResearch 子命令。SenseNova-Skills-DeepResearch 或 Harness 缺失时先报告缺失项，
 不要静默改用其他 Harness。
 
 不得显示环境变量值、token、Cookie、npm 凭据或 Harness Profile。
 
-## 安装或升级 sn-deepresearch-cli
+## 安装或升级 SenseNova-Skills-DeepResearch
 
 安装会访问网络并修改用户级 npm 目录，执行前先取得当前环境要求的授权。
 
@@ -57,7 +57,7 @@ deepresearch sources list --json
 - Hermes：复用现有 Hermes 登录和模型配置。
 - Codex：确认 `codex` 存在且已执行 `codex login`。
 - Claude Code：当前 ACP Harness 必须能找到 `claude-agent-acp` 可执行文件；普通 `claude`
-  命令不能直接替代它。CLI 内含调用适配代码，但不捆绑外部 adapter。adapter 缺失时，在获得安装授权后执行
+  命令不能直接替代它。SenseNova-Skills-DeepResearch 内含调用适配代码，但不捆绑外部 adapter。adapter 缺失时，在获得安装授权后执行
   `npm install -g @agentclientprotocol/claude-agent-acp`。安装完成不等于必须重复登录：先运行
   `deepresearch doctor --harness claude-code --json` 检查认证。已有 `ANTHROPIC_API_KEY`、
   `ANTHROPIC_AUTH_TOKEN`、Bedrock/Vertex 配置，或 adapter 可复用现有 Claude Code 登录时，直接使用；
@@ -77,7 +77,7 @@ deepresearch sources list --json
   `read`、`write`、`edit`、`apply_patch`、`exec` 和 `process`。如果配置缺失，先说明
   DeepResearch 的 `plan`、研究和报告节点需要在本次 Run 的 attempt 工作区创建产物。先向用户说明
   需要为当前 Agent 的当前工作区授予写权限，取得授权后再修改对应 Agent 配置、重启 Gateway 和复核；
-  不要静默扩大其他 Agent 或其他工作区的权限。检查未通过时不要启动 CLI。换设备或换 Agent 时重复
+  不要静默扩大其他 Agent 或其他工作区的权限。检查未通过时不要启动 SenseNova-Skills-DeepResearch。换设备或换 Agent 时重复
   这项预检，不复用旧机器的固定路径或配置。
 
   配置检查通过后，在启动正式研究前执行一次 OpenClaw 写入冒烟检查：
@@ -86,7 +86,7 @@ deepresearch sources list --json
   deepresearch doctor --harness openclaw --json
   ```
 
-  该检查必须确认 ACP 子会话能够在当前 CLI 工作区创建并删除临时文件；如果返回
+  该检查必须确认 ACP 子会话能够在当前 SenseNova-Skills-DeepResearch 工作区创建并删除临时文件；如果返回
   `workspace-write` 失败，先停止，不要启动正式研究。冒烟检查使用当前设备和当前 Agent 的
   实际工作区，不复用其他机器的测试结果。
 
@@ -94,7 +94,7 @@ deepresearch sources list --json
 
 ## 模型调用超时与恢复
 
-如果节点日志显示模型调用因连接层长时间无响应、stale/idle timeout、request timeout、broken pipe或类似 provider 错误中止，先向用户说明：失败发生在模型 provider/连接层，并确认失败节点、重试次数、实际 harness、provider、model 和超时类型；不要把它误判为搜索、报告转换或 CLI 安装失败。
+如果节点日志显示模型调用因连接层长时间无响应、stale/idle timeout、request timeout、broken pipe或类似 provider 错误中止，先向用户说明：失败发生在模型 provider/连接层，并确认失败节点、重试次数、实际 harness、provider、model 和超时类型；不要把它误判为搜索、报告转换或 SenseNova-Skills-DeepResearch 安装失败。
 
 先读取该 Harness 的官方配置或诊断输出，确认是“无响应空闲超时”还是“整次请求超时”，并只展示配置键名和当前值，不展示凭据。任何修改超时、重试次数、provider 或模型的操作都必须先向用户说明影响并申请授权，不得静默修改全局配置。
 
@@ -110,7 +110,7 @@ deepresearch resume <run-id> --harness hermes --progress tools
 
 ## 准备 Camofox
 
-Camofox 是普通网页抓取失败后的可选回退，基础 CLI 不包含浏览器文件。
+Camofox 是普通网页抓取失败后的可选回退，基础 SenseNova-Skills-DeepResearch 不包含浏览器文件。
 用户希望启用时，先说明需额外下载数百 MB 资源，再在授权后执行：
 
 ```bash
@@ -120,7 +120,7 @@ deepresearch browser status --json
 ```
 
 用户选择启用时确认健康状态。Camofox 只访问公开网页，不用于绕过 CAPTCHA、登录、付费墙或访问控制。
-未安装或不可用时不阻塞研究，CLI 会切换其他来源。只有用户明确要求时才传入 `--no-camofox-fallback`。
+未安装或不可用时不阻塞研究，SenseNova-Skills-DeepResearch 会切换其他来源。只有用户明确要求时才传入 `--no-camofox-fallback`。
 
 ## 确认研究参数
 
@@ -138,16 +138,16 @@ deepresearch browser status --json
 
 ### Query 与标题保持原文
 
-- 用户在本轮提供的研究文本就是 CLI 的实际 query；去掉仅用于触发 Skill 的前缀（例如“使用
-  deepresearch”）后，原文直接传给 CLI。
+- 用户在本轮提供的研究文本就是 SenseNova-Skills-DeepResearch 的实际 query；去掉仅用于触发 Skill 的前缀（例如“使用
+  deepresearch”）后，原文直接传给 SenseNova-Skills-DeepResearch。
 - 不要替用户改写、扩展、总结、压缩或重新命名 query，不要另造展示标题，也不要把 query 改成
   “研究 + 主题”的标题。
-- 用户写在 query 中的范围、数据源要求、时间范围和交付要求必须原样保留。研究标题由 CLI/Web
+- 用户写在 query 中的范围、数据源要求、时间范围和交付要求必须原样保留。研究标题由 SenseNova-Skills-DeepResearch/Web
   根据原始 query 展示，Skill 不参与标题生成。
-- `mode`、`report_format`、`output_format` 和 `language` 只作为 CLI 参数传递，不得混入或改写
+- `mode`、`report_format`、`output_format` 和 `language` 只作为 SenseNova-Skills-DeepResearch 参数传递，不得混入或改写
   query 文本。
 
-Quick 使用前台 sn-deepresearch-cli：
+Quick 使用前台 SenseNova-Skills-DeepResearch：
 
 ```bash
 deepresearch "<query>" \
@@ -173,7 +173,7 @@ deepresearch web "<query>" \
   --progress tools
 ```
 
-保持该进程运行，不要再启动第二份相同研究。等待 CLI 日志确认 Web 已在所选端口开始监听后，再把实际地址告诉用户：
+保持该进程运行，不要再启动第二份相同研究。等待 SenseNova-Skills-DeepResearch 日志确认 Web 已在所选端口开始监听后，再把实际地址告诉用户：
 
 ```text
 研究已经启动，可打开 http://127.0.0.1:<selected-port> 查看实时进度。
@@ -184,11 +184,11 @@ deepresearch web "<query>" \
 展示链接不等于强制打开浏览器；需要 GUI 操作时遵循当前环境授权。只有用户明确要求局域网访问时才使用
 `--host 0.0.0.0`，并提醒运行轨迹和报告会对同网段可见。
 
-### Harness/sn-deepresearch-cli 监控
+### Harness/SenseNova-Skills-DeepResearch 监控
 
-研究启动后，必须保留本次 Run 所使用的 Harness 和 sn-deepresearch-cli 监控进程，持续观察其 stdout/stderr、心跳和
+研究启动后，必须保留本次 Run 所使用的 Harness 和 SenseNova-Skills-DeepResearch 监控进程，持续观察其 stdout/stderr、心跳和
 `deepresearch status <run-id> --json` 状态。长时间没有新输出不等于进程已失效：先读取状态和最近日志，
-不要因为暂时无输出就重复启动 Harness、启动第二份 sn-deepresearch-cli 或终止现有进程。监控会话中断时，优先重新连接
+不要因为暂时无输出就重复启动 Harness、启动第二份 SenseNova-Skills-DeepResearch 或终止现有进程。监控会话中断时，优先重新连接
 到原进程；只有确认原进程已经退出、Run 已结束，或用户明确要求停止时，才可以结束监控或启动恢复命令。
 
 若监控发现 provider 超时、Harness 退出或 Run 失败，保留原进程输出和 Run 目录，按“模型调用超时与恢复”
@@ -200,11 +200,11 @@ deepresearch web "<query>" \
 - 失败或中断：如实说明失败节点，并保留 `runs/<run-id>/`。
 - 恢复：确认原进程已结束后，执行 `deepresearch resume <run-id> --harness <harness>`。
 
-不把搜索命中或中间文件当作最终报告，不伪造完成状态，不在 CLI 安装目录保存用户运行记录。
+不把搜索命中或中间文件当作最终报告，不伪造完成状态，不在 SenseNova-Skills-DeepResearch 安装目录保存用户运行记录。
 
-## sn-deepresearch-cli 诊断
+## SenseNova-Skills-DeepResearch 诊断
 
-本节只在 sn-deepresearch-cli 已安装后使用。正常研究流程不要预先执行整套诊断；仅当用户明确要求诊断，或安装验证失败、
+本节只在 SenseNova-Skills-DeepResearch 已安装后使用。正常研究流程不要预先执行整套诊断；仅当用户明确要求诊断，或安装验证失败、
 Search 异常、Web 无法访问、Run 停止更新、节点失败、报告未生成时，按当前问题选择最少的只读检查：
 
 ```bash
@@ -225,7 +225,7 @@ deepresearch web --help
 - Camofox 不可用：切换来源继续研究，不让工作流因此阻塞。
 - Run 失败：保留运行记录，只在确认原进程已结束后恢复。
 
-出现上述异常时，先执行 `deepresearch diagnostics --json`，再完整读取其 `path` 字段指向的 sn-deepresearch-cli 内置诊断手册。不要根据 Skill 所在目录推断 sn-deepresearch-cli 的安装位置，也不要读取 Skill 旁边或源码仓库中的相对路径。
+出现上述异常时，先执行 `deepresearch diagnostics --json`，再完整读取其 `path` 字段指向的 SenseNova-Skills-DeepResearch 内置诊断手册。不要根据 Skill 所在目录推断 SenseNova-Skills-DeepResearch 的安装位置，也不要读取 Skill 旁边或源码仓库中的相对路径。
 
-正常流程不要加载诊断手册。若命令失败或返回路径不存在，使用本节的最小只读检查并明确说明 sn-deepresearch-cli 诊断手册缺失。
+正常流程不要加载诊断手册。若命令失败或返回路径不存在，使用本节的最小只读检查并明确说明 SenseNova-Skills-DeepResearch 诊断手册缺失。
 诊断手册中的安装、配置修改、服务启动和网络操作仍需遵循当前环境授权；读取手册本身不扩大用户授权范围。
