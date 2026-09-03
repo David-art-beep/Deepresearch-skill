@@ -8,7 +8,7 @@ description: >-
 
 作为 DeepResearch CLI 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
 默认项目为 `https://github.com/David-art-beep/Deepresearch-cli`。当前以仓库源码构建本地 npm
-安装包，不依赖旧的版本化 Release 链接。
+安装包。
 
 ## 环境预检
 
@@ -40,9 +40,7 @@ npm install -g ./dist/*.tgz
 deepresearch --help
 ```
 
-不要默认改用 npm registry，也不要使用旧的 `v0.1.*` Release URL。
-不要要求用户安装 uv，也不要向系统 Python 全局安装依赖。用户提供本地 `.tgz` 时，可直接运行
-`npm install -g ./dist/*.tgz`。
+用户提供本地 `.tgz` 时，可直接运行 `npm install -g ./dist/*.tgz`。
 
 安装后初始化用户级 Search 配置：
 
