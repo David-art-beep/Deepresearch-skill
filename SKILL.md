@@ -1,13 +1,13 @@
 ---
 name: deepresearch
 description: >-
-  一键启用 DeepResearch CLI，用于行业与市场研究、竞品分析、政策或技术调研、商业尽调、趋势分析、方案对比、事实核查，以及研究报告、白皮书等交付场景。用户提出深度研究、调研、调查、尽调、research/deepresearch，或任务需要跨来源取证、多维度比较和交叉验证时主动使用；Skill 会完成环境检查、CLI 安装或升级、Harness 与 Search/Camofox 准备、参数确认、研究启动和 Web 进度提示。简单常识问答、单一来源整理和纯文字润色不使用。
+  一键启用 DeepResearch-CLI，用于行业与市场研究、竞品分析、政策或技术调研、商业尽调、趋势分析、方案对比、事实核查，以及研究报告、白皮书等交付场景。用户提出深度研究、调研、调查、尽调、research/deepresearch，或任务需要跨来源取证、多维度比较和交叉验证时主动使用；Skill 会完成环境检查、CLI 安装或升级、Harness 与 Search/Camofox 准备、参数确认、研究启动和 Web 进度提示。简单常识问答、单一来源整理和纯文字润色不使用。
 ---
 
-# DeepResearch
+# DeepResearch-CLI
 
-作为 DeepResearch CLI 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
-默认项目为 `https://github.com/David-art-beep/Deepresearch-cli`。当前以仓库源码构建本地 npm
+作为 DeepResearch-CLI 的用户入口，负责环境预检、安装引导、参数确认、任务启动、进度告知和结果交付。
+默认项目为 `https://github.com/OpenSenseNova/DeepResearch-CLI`。当前以仓库源码构建本地 npm
 安装包。
 
 ## 环境预检
@@ -31,8 +31,8 @@ description: >-
 从 GitHub 获取源码并构建本地 npm 安装包：
 
 ```bash
-git clone https://github.com/David-art-beep/Deepresearch-cli.git
-cd Deepresearch-cli
+git clone https://github.com/OpenSenseNova/DeepResearch-CLI.git
+cd DeepResearch-CLI
 python3 -m venv .venv
 .venv/bin/python -m pip install build
 .venv/bin/python scripts/build_npm_package.py
@@ -91,6 +91,28 @@ deepresearch sources list --json
   实际工作区，不复用其他机器的测试结果。
 
 模型、登录或 Provider 凭据缺失时，说明缺失配置，不替用户改写 Harness 全局配置。
+
+## 模型调用超时与恢复
+
+如果节点日志显示模型调用因连接层长时间无响应、stale/idle timeout、request timeout、broken pipe
+或类似 provider 错误中止，先向用户说明：失败发生在模型 provider/连接层，并确认失败节点、重试次数、
+实际 harness、provider、model 和超时类型；不要把它误判为搜索、报告转换或 CLI 安装失败。
+
+先读取该 Harness 的官方配置或诊断输出，确认是“无响应空闲超时”还是“整次请求超时”，并只展示配置键名和
+当前值，不展示凭据。任何修改超时、重试次数、provider 或模型的操作都必须先向用户说明影响并申请授权，
+不得静默修改全局配置。
+
+获得授权后，优先只针对本次实际使用的 provider/model 将无响应空闲超时调到 300 秒，再使用原 harness
+从失败 Run 恢复；不要从头重跑已成功的 plan/research。以 Hermes 为例，确认配置键为
+`providers.<provider_id>.models.<model>.stale_timeout_seconds` 后，才可执行：
+
+```bash
+hermes config set providers.<provider_id>.models.<model>.stale_timeout_seconds 300
+deepresearch resume <run-id> --harness hermes --progress tools
+```
+
+如果实际使用的是其他 Harness，先查明其等价配置键和修改命令，再向用户确认，不凭记忆猜测命令。
+重试仍失败时，保留原 Run 和日志，报告新的失败节点及 provider 错误。
 
 ## 准备 Camofox
 
@@ -167,6 +189,16 @@ deepresearch web "<query>" \
 
 展示链接不等于强制打开浏览器；需要 GUI 操作时遵循当前环境授权。只有用户明确要求局域网访问时才使用
 `--host 0.0.0.0`，并提醒运行轨迹和报告会对同网段可见。
+
+### Harness/CLI 监控
+
+研究启动后，必须保留本次 Run 所使用的 Harness 和 CLI 监控进程，持续观察其 stdout/stderr、心跳和
+`deepresearch status <run-id> --json` 状态。长时间没有新输出不等于进程已失效：先读取状态和最近日志，
+不要因为暂时无输出就重复启动 Harness、启动第二份 CLI 或终止现有进程。监控会话中断时，优先重新连接
+到原进程；只有确认原进程已经退出、Run 已结束，或用户明确要求停止时，才可以结束监控或启动恢复命令。
+
+若监控发现 provider 超时、Harness 退出或 Run 失败，保留原进程输出和 Run 目录，按“模型调用超时与恢复”
+流程向用户说明并申请配置修改授权；未经授权不得重启、改配置或并行启动新的 Harness。
 
 ## 完成、失败与恢复
 
