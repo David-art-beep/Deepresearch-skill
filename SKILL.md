@@ -33,12 +33,11 @@ description: >-
 ```bash
 git clone https://github.com/OpenSenseNova/SenseNova-Skills-DeepResearch.git
 cd SenseNova-Skills-DeepResearch
-python3 -m venv .venv
-.venv/bin/python -m pip install build
-.venv/bin/python scripts/build_npm_package.py
-npm install -g ./dist/*.tgz
+bash scripts/install.sh
 deepresearch --help
 ```
+
+源码更新后，在干净工作区运行 `bash scripts/update.sh`；它不会自动拉取 Git，也不会删除用户配置或运行记录。
 
 用户提供本地 `.tgz` 时，可直接运行 `npm install -g ./dist/*.tgz`。
 
